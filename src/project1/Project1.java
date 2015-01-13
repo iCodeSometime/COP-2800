@@ -27,7 +27,7 @@ public class Project1 {
 
 class Grades { // Class to store and process the test grades
        
-   /*                          Global Constants                             */
+   /*                           Class Constants                             */
    // Maximum allowed value
    private static final int    MAX_GRADE   = 100; 
    // Number used to record a skipped value
