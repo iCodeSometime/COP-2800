@@ -19,7 +19,9 @@ public class Project2 {
       // Instantiate a Person object and get the height and weight
       Person user = new Person();
       user.getDetails();
-      user.printDetails();
+      
+      // Display the BMI results
+      user.displayBMI();
    }
 }
 class Person {
@@ -36,10 +38,22 @@ class Person {
       height = getValue("height");
       weight = getValue("weight");
    }
-   // Print the person's height and weight
-   public void printDetails() {
-      JOptionPane.showMessageDialog(null, "The height is " + height +
-              "\nThe weight is " + weight);
+   // Display the BMI and status
+   public void displayBMI() {
+      double BMI;       // The user's BMI
+      String status; // The user's weight status
+      BMI = calculateBMI(); 
+      if (BMI < 18.5) {
+         status = "underweight";
+      } else if (BMI < 25.0) {
+         status = "at an optimal weight";
+      } else if (BMI < 30.0) {
+         status = "overweight";
+      } else {
+         status = "obese";
+      }
+      JOptionPane.showMessageDialog(null, "Your BMI is " + BMI +
+         ". \nThis means that you are " + status);
    }
     
    /*                          Private Methods                               */
@@ -88,5 +102,8 @@ class Person {
          }
       }
       return returnValue;
+   }
+   private double calculateBMI() {
+      return weight * 703.0 / (height * height);
    }
 }
