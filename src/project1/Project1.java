@@ -20,7 +20,7 @@ public class Project1 {
       Grades testGrades = new Grades();
       testGrades.getScores();
       
-      // Average the scores and display the result
+      // Display the average score
       testGrades.displayAverage();
    }
 }
