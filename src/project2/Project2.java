@@ -43,15 +43,23 @@ class Person {
    /*                           Public Methods                               */
    // Get the height and weight from the user
    public void getDetails() {
-      height = getValue("height");
-      weight = getValue("weight");
+      try {
+        height = getValue("height");
+        weight = getValue("weight");
+      } catch(IllegalArgumentException e) {
+          JOptionPane.showMessageDialog(null,
+             "There has been an error. Exiting.");
+          System.err.println("getValue was passed an illegal argument.\n" + e);
+          System.exit(1);
+      }
    }
    // Display the BMI and status
    public void displayBMI() {
       double BMI;       // The user's BMI
-      String status; // The user's weight status
-      BMI = calculateBMI(); 
-      if (BMI < UNDER_WEIGHT) {
+      String status;    // The user's weight status
+      String formatBMI; // Used to format the BMI
+      BMI = calculateBMI();
+      if (BMI < 18.5) {
          status = "underweight";
       } else if (BMI < OPTIMAL_WEIGHT) {
          status = "at an optimal weight";
@@ -60,7 +68,8 @@ class Person {
       } else {
          status = "obese";
       }
-      JOptionPane.showMessageDialog(null, "Your BMI is " + BMI +
+      formatBMI = new java.text.DecimalFormat("#.##").format(BMI);
+      JOptionPane.showMessageDialog(null, "Your BMI is " + formatBMI +
          ". \nThis means that you are " + status);
    }
     
@@ -77,12 +86,7 @@ class Person {
       } else if (item.equalsIgnoreCase("weight")) {
          units = "pounds";
       } else {
-         JOptionPane.showMessageDialog(null, 
-            "There has been an error. Exiting Program.");
-         System.err.println("Error in function getValue(String item).");
-         System.err.println("Function has received an invalid parameter.");
-         System.err.println("Expected (height || weight) but received " + item);
-         System.exit(1);
+          throw new IllegalArgumentException(item + " is not a valid argument");
       }
       
       // Loop until we have a valid value
