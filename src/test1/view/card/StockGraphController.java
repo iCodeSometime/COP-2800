@@ -12,11 +12,6 @@
 package test1.view.card;
 
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Random;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,9 +31,9 @@ public class StockGraphController {
    @FXML
    private Label stockLabel;
    @FXML
-   private CategoryAxis horizontalAxis;
+   private CategoryAxis xAxis;
    @FXML
-   private NumberAxis verticalAxis;
+   private NumberAxis yAxis;
    @FXML
    private LineChart<String, Number> stockChart;
    
@@ -56,9 +51,12 @@ public class StockGraphController {
     */
    @FXML
    private void initialize() {
-      horizontalAxis.setCategories(dateList);
-      verticalAxis = new NumberAxis();
-      stockChart = new LineChart<String, Number>(horizontalAxis, verticalAxis);
+      xAxis = new CategoryAxis();
+      yAxis = new NumberAxis();
+      
+      xAxis.setAutoRanging(false);
+      xAxis.setCategories(dateList);
+      //stockChart = new LineChart<String, Number>(xAxis, yAxis);
    }
    
    /**
@@ -83,14 +81,12 @@ public class StockGraphController {
     * Creates the line graph in it's stock card.
     */
    private void createGraph() {
+      stockChart.getData().clear();
       Random rand = new Random();
-      for (int i = 0; i < 5; i++) {
-         if (stockChart != null) {
-            //stockChart.getData().add(new XYChart.Data(i, rand.nextInt()));
-         } else {
-            System.err.println("stockChart is still null D:");
-         }
-      }
+      XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
+      dateList.forEach(date -> series.getData().add(
+         new XYChart.Data<String, Number>(date, rand.nextInt(100))));
+      stockChart.getData().addAll(series);
    }
    
    /**
