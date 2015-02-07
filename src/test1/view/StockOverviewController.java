@@ -36,9 +36,9 @@ public class StockOverviewController {
    @FXML
    private void initialize() {
       loadSearchBar();
-      loadStockCard("GOOG");
+      loadStockCard("GOOGL");
       loadStockCard("TMUS");
-      loadStockCard("USAA");
+      loadStockCard("MSFT");
       loadStockCard("S");
    }
    
