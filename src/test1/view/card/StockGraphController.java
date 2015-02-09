@@ -16,8 +16,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Random;
 import javafx.application.Platform;
@@ -32,6 +35,8 @@ import javafx.scene.control.Label;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javax.json.stream.JsonParser;
 import javax.net.ssl.HttpsURLConnection;
 import test1.*;
 
@@ -50,7 +55,7 @@ public class StockGraphController {
    private LineChart<String, Number> stockChart;
    
    Task<String> task;
-   private ObservableList<String> dateList;
+   private static ObservableList<String> dateList;
    private LocalDate date = LocalDate.now();
    
    public StockGraphController() {
@@ -65,10 +70,9 @@ public class StockGraphController {
     */
    @FXML
    private void initialize() {
-      xAxis = new CategoryAxis();
+      xAxis = new CategoryAxis(dateList);
       yAxis = new NumberAxis();
       
-      xAxis.setAutoRanging(false);
       xAxis.setCategories(dateList);
    }
    
@@ -106,13 +110,6 @@ public class StockGraphController {
       });
       th.start();
       
-      /*
-      Random rand = new Random();
-      XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
-      dateList.forEach(date -> series.getData().add(
-         new XYChart.Data<String, Number>(date, rand.nextInt(100))));
-      stockChart.getData().addAll(series);
-      */
    }
    
    /**
@@ -123,25 +120,39 @@ public class StockGraphController {
     */
    private void fillGraph(String json) {
       JsonObject results;
-      LinkedList<XYChart.Series<String, Number>> list =
-         new LinkedList<XYChart.Series<String, Number>>();
-      ObservableList<XYChart.Series<String, Number>> series = 
-         FXCollections.observableList(list);
+      XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
+      XYChart.Series<String, Number> reversedSeries = new XYChart.Series<String, Number>();
       JsonReader jReader = Json.createReader(new StringReader(json));
       JsonObject ob = jReader.readObject();
       jReader.close();
          ob = ob.getJsonObject("query");
          try {
             results = ob.getJsonObject("results");
-            System.out.println(results.toString());
          } catch (ClassCastException e) {
             System.err.println("The results were null for stock " + stockName);
             return;
          }
       JsonArray quotes = results.getJsonArray("quote");
-      quotes.forEach(quote -> 
-         System.out.println(quote.toString())
-      );
+      quotes.forEach(quote -> {
+         JsonObject quoteObject = (JsonObject)quote;
+         String dateString = quoteObject.getString("Date");
+         if (dateString.substring(8).equals("01")) {
+            dateString = getMonth(dateString.substring(5, 7)) + " " + dateString.substring(0, 4);
+         }
+         series.getData().add(new XYChart.Data(dateString,
+            Double.parseDouble(quoteObject.getString("Close"))));
+      });
+      // For some reason I get errors when using FXCollections.reverse()
+      // This should just reverse the list.
+      series.getData().sort((Object value1, Object value2) -> 1);
+      Platform.runLater(new Task() {
+         @Override
+         protected Boolean call() {
+            if (Platform.isFxApplicationThread()) {
+               return stockChart.getData().addAll(series);
+            } else return false;
+         }
+      });
    }
    
    /**
@@ -149,12 +160,11 @@ public class StockGraphController {
     * If it encounters a 504 error it will recursively call itself
     * up to five times. If it is still unable to make a connection, it will
     * throw the error to the calling function.
-    */
+    */ 
    private class GetStockHistory extends Task<String> {
       int iteration = 0;
       @Override
       protected String call() throws IOException {
-         System.out.println("Starting task!\n");
          URL url;
          String json = "";
          String line;
@@ -205,15 +215,66 @@ public class StockGraphController {
    }
    
    /**
-    * 
+    * A list containing the month, and year for every month in the past year.
     */
    private void getDateList() {
       ObservableList<String> localDateList = FXCollections.observableArrayList();
-      for (int i = 4; i >= 0; i--) {
-         LocalDate temp = date.minusDays(i);
-         localDateList.add(temp.getMonth().toString().substring(0, 3) +
-            " " + temp.getDayOfMonth());
+      for (int i = 12; i >= 0; i--) {
+         LocalDate temp = date.minusMonths(i);
+         localDateList.add(temp.getMonth().toString().substring(0, 3) + " " +
+            temp.getYear());
       }
       dateList = localDateList;
+   }
+   /**
+    * Takes in a two number representation of a month, and returns
+    * the string value of the month. For example, for input 01, it would 
+    * return JAN. For 02, FEB, etc.
+    * @param month A two digit string representing a month
+    * @return A month's three digit abbreviation.
+    */
+   private String getMonth(String month) {
+      String monthName;
+      switch (month) {
+         case "01":
+            monthName = "JAN";
+            break;
+         case "02":
+            monthName = "FEB";
+            break;
+         case "03":
+            monthName = "MAR";
+            break;
+         case "04":
+            monthName = "APR";
+            break;
+         case "05":
+            monthName = "MAY";
+            break;
+         case "06":
+            monthName = "JUN";
+            break;
+         case "07":
+            monthName = "JUL";
+            break;
+         case "08":
+            monthName = "AUG";
+            break;
+         case "09":
+            monthName = "SEP";
+            break;
+         case "10":
+            monthName = "OCT";
+            break;
+         case "11":
+            monthName = "NOV";
+            break;
+         case "12":
+            monthName = "DEC";
+            break;
+         default:
+            throw new IllegalArgumentException(month + " is not a valid month");
+      }
+      return monthName;
    }
 }

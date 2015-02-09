@@ -11,12 +11,12 @@
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test1.view.card.StockGraphController">
    <children>
-      <LineChart fx:id="stockChart" layoutX="60.0" layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
+      <LineChart fx:id="stockChart" createSymbols="false" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="250.0" verticalGridLinesVisible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
         <xAxis>
-          <CategoryAxis fx:id="horizontalAxis" side="BOTTOM" />
+          <CategoryAxis side="BOTTOM" fx:id="xAxis" />
         </xAxis>
         <yAxis>
-          <NumberAxis fx:id="vericalAxis" side="LEFT" />
+          <NumberAxis fx:id="yAxis" forceZeroInRange="false" minorTickCount="25" side="LEFT" tickUnit="50.0" />
         </yAxis>
       </LineChart>
       <Label fx:id="stockLabel" alignment="CENTER" layoutX="127.0" layoutY="-1.0" prefHeight="25.0" prefWidth="240.0" text="Placeholder" textAlignment="RIGHT" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
