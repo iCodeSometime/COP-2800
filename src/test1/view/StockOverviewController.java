@@ -16,6 +16,7 @@ package test1.view;
 import test1.view.card.*;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
@@ -24,10 +25,12 @@ import test1.*;
 
 public class StockOverviewController {
    // Reference to the main application
-   private MainApp mainApp;
+   private MainApp            mainApp;
+   private LinkedList<String> stockList = new LinkedList<String>();
    
    @FXML
    private FlowPane rootFlowPane;
+   
    
    /**
     * Initialize the controller class. This method is automatically
@@ -67,15 +70,15 @@ public class StockOverviewController {
     * @param stock The name of a stock symbol.
     */
    private void loadStockCard(String stock) {
+      stockList.add(stock);
       try {
          FXMLLoader loader = new FXMLLoader();
          loader.setLocation(MainApp.class.getResource("view/card/StockGraph.fxml"));
          AnchorPane stockGraph = (AnchorPane)loader.load();
          
          rootFlowPane.getChildren().add(stockGraph);
-         
          StockGraphController controller = loader.getController();
-         controller.setNameAndMainApp(mainApp, stock);         
+         controller.setNameAndMainApp(mainApp, stock);
       } catch (IOException e) {
          System.err.println("There was an error in loading fxml for the stock card.\n");
          e.printStackTrace();
@@ -89,5 +92,8 @@ public class StockOverviewController {
     */
    public void setMainApp(MainApp mainApp) {
       this.mainApp = mainApp;
+   }
+   public LinkedList<String> getStockList() {      
+      return stockList;
    }
 }

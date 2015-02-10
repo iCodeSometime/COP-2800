@@ -16,13 +16,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Random;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,8 +30,6 @@ import javafx.scene.control.Label;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javax.json.stream.JsonParser;
 import javax.net.ssl.HttpsURLConnection;
 import test1.*;
 
@@ -54,7 +47,6 @@ public class StockGraphController {
    @FXML
    private LineChart<String, Number> stockChart;
    
-   Task<String> task;
    private static ObservableList<String> dateList;
    private LocalDate date = LocalDate.now();
    
@@ -72,8 +64,10 @@ public class StockGraphController {
    private void initialize() {
       xAxis = new CategoryAxis(dateList);
       yAxis = new NumberAxis();
-      
+      // I don't have time to perfect the display of the axes, so I have
+      // set them to be invisible in the fxml. 
       xAxis.setCategories(dateList);
+      
    }
    
    /**
@@ -99,7 +93,7 @@ public class StockGraphController {
     * Creates the line graph in it's stock card.
     */
    private void createGraph() {
-      task = new GetStockHistory();
+      Task<String> task = new GetStockHistory();
       Thread th = new Thread(task);
       th.setDaemon(true);
       task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -125,13 +119,13 @@ public class StockGraphController {
       JsonReader jReader = Json.createReader(new StringReader(json));
       JsonObject ob = jReader.readObject();
       jReader.close();
-         ob = ob.getJsonObject("query");
-         try {
-            results = ob.getJsonObject("results");
-         } catch (ClassCastException e) {
-            System.err.println("The results were null for stock " + stockName);
-            return;
-         }
+      ob = ob.getJsonObject("query");
+      try {
+         results = ob.getJsonObject("results");
+      } catch (ClassCastException e) {
+         System.err.println("The results were null for stock " + stockName);
+         return;
+      }
       JsonArray quotes = results.getJsonArray("quote");
       quotes.forEach(quote -> {
          JsonObject quoteObject = (JsonObject)quote;
@@ -209,7 +203,7 @@ public class StockGraphController {
       request.append(date.minusYears(1).toString());
       request.append("%22%20and%20endDate%3D%22");
       request.append(date.toString());
-      request.append("%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=");
+      request.append("%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=");
       
       return request.toString();
    }
@@ -276,5 +270,8 @@ public class StockGraphController {
             throw new IllegalArgumentException(month + " is not a valid month");
       }
       return monthName;
+   }
+   public String getStockName() {
+      return stockName;
    }
 }
