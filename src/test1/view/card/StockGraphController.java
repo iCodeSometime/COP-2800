@@ -182,7 +182,6 @@ public class StockGraphController {
                   json = call();
                } else throw e;
             }
-               
          }
          return json;
       }

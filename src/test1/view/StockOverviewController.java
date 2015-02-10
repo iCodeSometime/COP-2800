@@ -39,10 +39,6 @@ public class StockOverviewController {
    @FXML
    private void initialize() {
       loadSearchBar();
-      loadStockCard("GOOGL");
-      loadStockCard("TMUS");
-      loadStockCard("MSFT");
-      loadStockCard("S");
    }
    
    /**
@@ -53,6 +49,8 @@ public class StockOverviewController {
          FXMLLoader loader = new FXMLLoader();
          loader.setLocation(MainApp.class.getResource("view/card/Search.fxml"));
          AnchorPane searchCard = (AnchorPane)loader.load();
+         SearchController controller = loader.getController();
+         controller.setParentFlowPane(this);
          
          rootFlowPane.getChildren().add(searchCard);
          
@@ -69,8 +67,8 @@ public class StockOverviewController {
     * 
     * @param stock The name of a stock symbol.
     */
-   private void loadStockCard(String stock) {
-      stockList.add(stock);
+  public void loadStockCard(String stock) {
+      stockList.addFirst(stock);
       try {
          FXMLLoader loader = new FXMLLoader();
          loader.setLocation(MainApp.class.getResource("view/card/StockGraph.fxml"));
@@ -92,6 +90,9 @@ public class StockOverviewController {
     */
    public void setMainApp(MainApp mainApp) {
       this.mainApp = mainApp;
+   }
+   public FlowPane getRootFlowPane() {
+      return rootFlowPane;
    }
    public LinkedList<String> getStockList() {      
       return stockList;
