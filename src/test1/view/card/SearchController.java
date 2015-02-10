@@ -68,7 +68,7 @@ public class SearchController {
    /**
     * Task class used to check that a stock name is valid.
     */
-   private class checkStockName extends Task {
+   private class checkStockName extends Task<Boolean> {
       private String stockName;
       private int    iteration;
       

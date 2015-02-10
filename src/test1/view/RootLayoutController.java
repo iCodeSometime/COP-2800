@@ -25,6 +25,8 @@ import java.io.StringReader;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.Iterator;
+import java.util.LinkedList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 
@@ -69,14 +71,14 @@ public class RootLayoutController {
       saveFile.delete();
       StockOverviewController controller = mainApp.getStockOverviewLoader().getController();
       controller.getStockList().forEach(stockName -> {
-      Task<String> task = new GetStockQuote(stockName);
-      Thread th = new Thread(task);
-      // Do not cause the exit button to terminate this thread. Save anyways.
-      th.setDaemon(false);
-      task.setOnSucceeded((WorkerStateEvent event) -> {
-         appendToFile(task.getValue());
-      });
-      th.start();
+        Task<String> task = new GetStockQuote(stockName);
+        Thread th = new Thread(task);
+        // Do not cause the exit button to terminate this thread. Save anyways.
+        th.setDaemon(false);
+        task.setOnSucceeded((WorkerStateEvent event) -> {
+           appendToFile(task.getValue());
+        });
+        th.start();
       });
    }
    
