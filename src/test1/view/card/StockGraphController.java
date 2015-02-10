@@ -33,6 +33,9 @@ import javafx.event.EventHandler;
 import javax.net.ssl.HttpsURLConnection;
 import test1.*;
 
+/**
+ * FXML Controller class
+ */
 public class StockGraphController {
    // Reference to the main application
    private MainApp mainApp;
@@ -157,6 +160,11 @@ public class StockGraphController {
     */ 
    private class GetStockHistory extends Task<String> {
       int iteration = 0;
+      /**
+       * Override the abstract call method from Task
+       * @return the JSON String received from Yahoo Finance
+       * @throws IOException Tries to handle it, if it can't it throws it.
+       */
       @Override
       protected String call() throws IOException {
          URL url;
@@ -223,6 +231,7 @@ public class StockGraphController {
     * Takes in a two number representation of a month, and returns
     * the string value of the month. For example, for input 01, it would 
     * return JAN. For 02, FEB, etc.
+    * 
     * @param month A two digit string representing a month
     * @return A month's three digit abbreviation.
     */
@@ -270,6 +279,10 @@ public class StockGraphController {
       }
       return monthName;
    }
+   /**
+    * Get the name of the stock listed on this info card
+    * @return The name of the stock.
+    */
    public String getStockName() {
       return stockName;
    }

@@ -25,6 +25,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+/**
+ * Entry class for Stock Market Application.
+ */
 public class MainApp extends Application {
    private Stage      primaryStage;
    private BorderPane rootLayout;
@@ -102,16 +105,36 @@ public class MainApp extends Application {
    public FXMLLoader getStockOverviewLoader() {
       return stockOverviewLoader;
    }
+   
+   /**
+    * Adds a stock Name to the stockList.
+    * @param stock Stock to add
+    */
    public void addStock(String stock) {
       stockList.add(stock);
    }
+   
+   /** Returns the list of stocks
+    * 
+    * @return a String list of stockNames
+    */
    public LinkedList<String> getStockList() {
       return stockList;
    }
+   
+   /**
+    * Share our reference to the application window
+    * @return reference to the application window
+    */
    public Stage getPrimaryStage() {
       return primaryStage;
    }
 
+   /**
+    * This is not actually used in NetBeans, and is only included 
+    * for compatibility with other IDE's
+    * @param args command line arguments.
+    */
    public static void main(String[] args) {
       launch(args);
    }

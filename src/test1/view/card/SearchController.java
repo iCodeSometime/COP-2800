@@ -25,6 +25,9 @@ import javafx.scene.layout.FlowPane;
 import javax.net.ssl.HttpsURLConnection;
 import javax.swing.JOptionPane;
 
+/**
+ * FXML Controller class
+ */
 public class SearchController {
    StockOverviewController parent;
    @FXML
@@ -32,9 +35,19 @@ public class SearchController {
    @FXML
    TextField searchField;
    
-   public void setParentFlowPane(StockOverviewController parent) {
+   /**
+    * @param parent reference to the controller of the parent container.
+    */
+   public void setParent(StockOverviewController parent) {
       this.parent = parent;
    }
+   
+   /**
+    * Event handler for the search button. Can also be called by pushing enter
+    * while the text field has focus. This method will check with Yahoo Finance
+    * to make sure data for the stock exists. If it does, it will call 
+    * loadStockCard in its parent controller.
+    */
    @FXML
    private void handleSearchButton() {
       String stockName = searchField.getText().toUpperCase();
@@ -52,6 +65,9 @@ public class SearchController {
       //parent.loadStockCard(stockName);
    }
    
+   /**
+    * Task class used to check that a stock name is valid.
+    */
    private class checkStockName extends Task {
       private String stockName;
       private int    iteration;

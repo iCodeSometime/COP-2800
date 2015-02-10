@@ -23,8 +23,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import test1.*;
 
+/**
+ * FXML Controller class
+ */
 public class StockOverviewController {
-   // Reference to the main application
    private MainApp            mainApp;
    private LinkedList<String> stockList = new LinkedList<String>();
    
@@ -50,7 +52,7 @@ public class StockOverviewController {
          loader.setLocation(MainApp.class.getResource("view/card/Search.fxml"));
          AnchorPane searchCard = (AnchorPane)loader.load();
          SearchController controller = loader.getController();
-         controller.setParentFlowPane(this);
+         controller.setParent(this);
          
          rootFlowPane.getChildren().add(searchCard);
          
@@ -86,14 +88,22 @@ public class StockOverviewController {
    /**
     * Is called by the main application to give a reference back to itself
     * 
-    * @param mainApp
+    * @param mainApp a reference to the main application class
     */
    public void setMainApp(MainApp mainApp) {
       this.mainApp = mainApp;
    }
+   
+   /**
+    * @return a reference to the flowPane (The main element in this file)
+    */
    public FlowPane getRootFlowPane() {
       return rootFlowPane;
    }
+   
+   /**
+    * @return a list of all Stocks currently displayed in our application
+    */
    public LinkedList<String> getStockList() {      
       return stockList;
    }

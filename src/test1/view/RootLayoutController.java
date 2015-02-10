@@ -38,8 +38,6 @@ import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
- *
- * @author Kenneth
  */
 public class RootLayoutController {
    private MainApp mainApp;
@@ -55,7 +53,11 @@ public class RootLayoutController {
       this.mainApp = mainApp;
    }
    
-   
+   /**
+    * Event handler for the save button. Also responds to "Ctrl+S"
+    * Will save key information about stocks to a file specified by the user.
+    * If the user has previously specified a file, will not ask again.
+    */
    @FXML
    private void handleSave() {
       // Get a file from the user.
@@ -78,6 +80,11 @@ public class RootLayoutController {
       });
    }
    
+   /**
+    * Event handler for the Save As button. Also responds to "Ctrl+Shift+S"
+    * Will save key information about stocks to a file specified by the user.
+    * This function will ignore a previously specified file.
+    */
    @FXML
    private void handleSaveAs() {
       getFile();
@@ -85,6 +92,11 @@ public class RootLayoutController {
          handleSave();
       }
    }
+   
+   /**
+    * Event handler for the about button. Also responds to "Ctrl+A"
+    * Provides a short description of the program.
+    */
    @FXML
    private void handleAbout() {
       Thread th = new Thread(new Task() {
@@ -103,6 +115,12 @@ public class RootLayoutController {
       th.setDaemon(true);
       th.start();
    }
+   
+   /**
+    * Event handler for the Test button. Also responds to "Ctrl+T"
+    * Asks the user for information about a stock, and outputs data
+    * derived from that. Will NOT query Yahoo finance for information.
+    */
    @FXML
    private void handleTest() {
       Thread th = new Thread (new Task<Boolean>() {
@@ -158,6 +176,9 @@ public class RootLayoutController {
       th.start();
    }
    
+   /**
+    * Uses a system file chooser to get a file.
+    */
    private void getFile() {
       FileChooser fileChooser = new FileChooser();
       fileChooser.setTitle("Choose Save File");
@@ -166,6 +187,13 @@ public class RootLayoutController {
       saveFile = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
    }
    
+   /**
+    * Appends basic information about a stock from it's JSON description.
+    * JSON must be in the same format as that returned from 
+    * yahoo.finance.historicaldata, with only one quote member.
+    * 
+    * @param json a JSON string formated like yahoo.finance.historicaldata
+    */
    private void appendToFile(String json) {
       JsonReader jReader = Json.createReader(new StringReader(json));
       JsonObject ob = jReader.readObject();
@@ -183,6 +211,9 @@ public class RootLayoutController {
       }
    }
    
+   /**
+    * A task used to get a stock quote from Yahoo Finance.
+    */
    private class GetStockQuote extends Task<String> {
       int iteration = 0;
       String stockName;
@@ -190,6 +221,13 @@ public class RootLayoutController {
          this.stockName = stockName;
       }
       
+      /**
+       * Override the abstract call method in Task.
+       * 
+       * @return The JSON we receive
+       * @throws IOException We attempt to resolve conflicts,
+       *         but throw them if we can not
+       */
       @Override
       protected String call() throws IOException {
          URL url;
@@ -220,6 +258,11 @@ public class RootLayoutController {
       }
    };
    
+   /**
+    * Builds our Yahoo Finance request.
+    * @param stockName The name of the stock we want information on
+    * @return The URL for our request
+    */
    private String requestBuilder(String stockName) {
       StringBuilder request = new StringBuilder();
       LocalDate date = LocalDate.now().minusDays(1);
