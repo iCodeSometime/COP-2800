@@ -3,11 +3,11 @@
  *  Instructor: Mr. Rich Cacase
  *  Class:      COP 2800 Java
  *  Author:     Kenneth Cochran
- *  Program:    2 (Calculate BMI)
+ *  Program:    3 (Convert Temperatures)
  *
- *  The user will input a height and a weight. The program will then 
- *  calculate the BMI and let the user know if they are underweight, 
- *  overweight, etc.
+ *  A text box will be displayed, containing the temperatures 0-20 degrees
+ *  Celsius, along with it's corresponding temperature in Fahrenheit.
+ *  The user will then input the name of a file to output the table to.
  *****************************************************************************/
 
 package project3;
@@ -42,6 +42,7 @@ class TemperatureChart {
    JScrollPane scroll  = new JScrollPane(display);
    
    File file;
+   
    /*                            Constructors                                */
    public void TemperatureChart() {
       // Instantiate JTextArea and JScrollPane objects, and set defaults
