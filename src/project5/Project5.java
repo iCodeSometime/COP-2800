@@ -12,21 +12,20 @@
 
 package project5;
 
-import javax.swing.JOptionPane;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-public class Project5 {
+public class Project5 extends Application {
+   @Override
+   public void start(Stage primaryStage) {
+       primaryStage.setTitle("Cars");
+   }
+           
    public static void main(String[] args) {
-       
+       launch(args);
    }
 }
-class BadMethodCall extends Exception{
-    public BadMethodCall() {
-        super();
-    }
-    public BadMethodCall(String message) {
-        super(message);
-    }
-}
+
 class Car {
     /*                           Member Variables                            */
     // The initial speed of the car
@@ -55,9 +54,10 @@ class Car {
         return speed;
     }
     // Decrease the speed of the car and return the new speed, or 
-    public int brake() throws BadMethodCall {
+    public int brake() throws UnsupportedOperationException {
         if (speed == 0) {
-            throw new BadMethodCall();
+            throw new UnsupportedOperationException(
+                    "Maybe you don't understand how a brake works...");
         } else {
             speed -= SPEED_QUANTIZATION;
         }
