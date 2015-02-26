@@ -51,6 +51,9 @@ class RockPaperScissorsGame {
       userChoice = JOptionPane.showOptionDialog(null, "Choose your weapon",
             "Choose Your Weapon", JOptionPane.OK_OPTION,
             JOptionPane.QUESTION_MESSAGE, null, options, this) + 1;
+      if (userChoice == 0) {
+          System.exit(0);
+      }
    }
    
    /**
@@ -61,8 +64,14 @@ class RockPaperScissorsGame {
     * 
     * @return The integer result of the match.
     */
-   public void displayWinner() {
-      
+   public int displayWinner() {
+      int returnValue;
+      String displayString = "";
+      displayString += "\nYou have chosen " + choiceToString(userChoice);
+      displayString += "\nThe computer has chosen " + choiceToString(compChoice);
+      displayString += "\n" + getWinnerMessage(returnValue = findWinner());
+      JOptionPane.showMessageDialog(null, displayString);
+      return returnValue;
    }
    
    /**
@@ -73,15 +82,39 @@ class RockPaperScissorsGame {
     * 
     * @return The integer result of the match.
     */
-   public void findWinner() {
-      
+   public int findWinner() {
+      return (3 + userChoice - compChoice) % 3;
    }
    
    /*                          Private Methods                               */
    // Use a random number to get a computer choice. Return this value.
    private void initCompChoice() {
-      Random rand = new Random();
-      rand.setSeed(System.currentTimeMillis());
+      Random rand = new Random(System.currentTimeMillis());
       compChoice = rand.nextInt(3) + 1;
+   }
+   // returns the String value of the choice
+   private String choiceToString(int choice) {
+      switch(choice) {
+         case ROCK:
+            return "rock";
+         case PAPER:
+            return "paper";
+         case SCISSORS:
+            return "scissors";
+         default:
+            return "error";
+      }
+   }
+   private String getWinnerMessage(int winner) {
+      switch(winner) {
+         case USER_WIN:
+            return "You won. *yay*";
+         case COMP_WIN:
+            return "You lost. Loser.";
+         case TIE:
+            return "You tied. Lame.";
+         default:
+            return "error";
+      }
    }
 }
