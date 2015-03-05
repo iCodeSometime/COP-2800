@@ -3,11 +3,12 @@
  *  Instructor: Mr. Rich Cacase
  *  Class:      COP 2800 Java
  *  Author:     Kenneth Cochran
- *  Program:    1 (Average Three Integer Test Scores)
+ *  Program:    5 (Car Class)
  *
- *  The user will input three integer test scores into a dialog box,
- *  which will then be averaged. The result will be displayed as
- *  a double precision decimal number
+ *  The user will provide a make and model for a car. They will then be
+ *  presented with an interface to brake and accelerate. The car will increase
+ *  or decrease it's speed by five MPH, while observing all relevant laws of
+ *  physics.
  *****************************************************************************/
 
 package project5;
@@ -28,6 +29,8 @@ public class Project5 extends Application {
    public void start(Stage primaryStage) {
       this.primaryStage = primaryStage;
       this.primaryStage.setTitle("Cars");
+      this.primaryStage.setHeight(150);
+      this.primaryStage.setWidth(150);
       
       getCar();
       
@@ -68,7 +71,7 @@ public class Project5 extends Application {
       buttonPane.getChildren().add(brake);
       buttonPane.getChildren().add(accelerate);
       labelPane.getChildren().add(speed);
-      rootLayout.setCenter(buttonPane);
+      rootLayout.setBottom(buttonPane);
       rootLayout.setTop(labelPane);
       primaryStage.setScene(new Scene(rootLayout));
       primaryStage.show();
@@ -82,30 +85,34 @@ public class Project5 extends Application {
 class Car {
    /*                           Member Variables                            */
    // The initial speed of the car
-   private static final int DEFAULT_SPEED      = 0;
+   protected static final int DEFAULT_SPEED      = 0;
    // Any change in speed will be in increments of this number
-   private static final int SPEED_QUANTIZATION = 5;
+   protected static final int SPEED_QUANTIZATION = 5;
    // Speed of light in mph: 670,616,629
-   private static final int SPEED_OF_LIGHT     = 670616629;
+   public static final int SPEED_OF_LIGHT        = 670616629;
    
-   private final String    yearModel; // The model year of the car
-   private final String make;      // The make of the car
-   
-   private int speed; // The car's current speed
+   private final String modelYear;
+   private final String make;
+   // Protected instead of private to make testing easier
+   protected int speed; 
    /*                             Constructors                              */
    /**
     * Constructs a car from the make and model year
     * 
     * @param make      non null String representing the car's make
-    * @param yearModel non null String representing the car's model year
+    * @param modelYear non null String representing the car's model year
     */
-   public Car(String make, String yearModel) {
-       this.yearModel = yearModel;
+   public Car(String make, String modelYear) {
+       this.modelYear = modelYear;
        this.make      = make;
        speed          = DEFAULT_SPEED;
    }
+   public Car(){
+       modelYear = "";
+       make      = "";
+   }
    /*                               Accessors                               */
-   public String    getYearModel() {return yearModel;}
+   public String getYearModel() {return modelYear;}
    public String getMake()      {return make;}
    public int    getSpeed()     {return speed;}
    
