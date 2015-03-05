@@ -23,21 +23,29 @@ import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 
 public class Project5 extends Application {
-   private Stage primaryStage;
-   private Car   car;
+   protected Stage primaryStage;
+   protected   Car   car;
+   
+   private BorderPane rootLayout = new BorderPane();
+   private FlowPane   buttonPane = new FlowPane();
+   private FlowPane   labelPane  = new FlowPane();
+   private Button     accelerate = new Button();
+   private Button     brake      = new Button();
+   private Label      speed      = new Label();
+   
    @Override
    public void start(Stage primaryStage) {
       this.primaryStage = primaryStage;
       this.primaryStage.setTitle("Cars");
-      this.primaryStage.setHeight(150);
-      this.primaryStage.setWidth(150);
+      this.primaryStage.setHeight(90);
+      this.primaryStage.setWidth(160);
       
-      getCar();
-      
+      makeCar();
       initRootLayout();
+      primaryStage.show();
    }
    
-   private void getCar() {
+   protected void makeCar() {
       boolean valid = false;
       String make = JOptionPane.showInputDialog(null,
          "Please enter the make of the car.");
@@ -49,24 +57,19 @@ public class Project5 extends Application {
       car = new Car(make, model);
    }
    
-   private void initRootLayout() {
-      BorderPane rootLayout = new BorderPane();
-      FlowPane   buttonPane = new FlowPane();
-      FlowPane   labelPane  = new FlowPane();
-      Button     accelerate = new Button();
-      Button     brake      = new Button();
-      Label      speed      = new Label();
-      
-      buttonPane.setHgap(10);
+   protected void initRootLayout() {
+      buttonPane.setHgap(20);
       labelPane.setMinHeight(15);
       
-      speed.textProperty().set(Integer.toString(car.getSpeed()));
+      speed.textProperty().set("Speed: " + Integer.toString(car.getSpeed()));
       accelerate.setText("accelerate");
       brake.setText("brake");
       accelerate.setOnAction((event) ->
-            speed.textProperty().set(Integer.toString(car.accelerate())));
+            speed.textProperty().set("Speed: " +
+               Integer.toString(car.accelerate())));
       brake.setOnAction((event) -> 
-            speed.textProperty().set(Integer.toString(car.brake())));
+            speed.textProperty().set("Speed: " +
+               Integer.toString(car.brake())));
       
       buttonPane.getChildren().add(brake);
       buttonPane.getChildren().add(accelerate);
@@ -74,8 +77,12 @@ public class Project5 extends Application {
       rootLayout.setBottom(buttonPane);
       rootLayout.setTop(labelPane);
       primaryStage.setScene(new Scene(rootLayout));
-      primaryStage.show();
    }
+   
+   public Car   getCar()         {return car;}
+   public String getLabelText()   {return speed.getText();}
+   public void   pushAccelerate() {accelerate.fire();}
+   public void   pushBrake()      {brake.fire();}
            
    public static void main(String[] args) {
       launch(args);
@@ -108,8 +115,7 @@ class Car {
        speed          = DEFAULT_SPEED;
    }
    public Car(){
-       modelYear = "";
-       make      = "";
+       this("", "");
    }
    /*                               Accessors                               */
    public String getYearModel() {return modelYear;}
