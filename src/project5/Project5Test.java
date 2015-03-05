@@ -6,7 +6,10 @@
  *  Program:    5 (Car Class)
  *  File:       Project5Test.java
  *
- *  This class will 
+ *  This class contains all unit tests for project 5. I manually checked the
+ *  user interface to ensure the buttons functioned properly, but did not test
+ *  it extensively, as the event handlers are merely wrappers for the 
+ *  functions I am testing here.
  *****************************************************************************/
 
 package project5;
