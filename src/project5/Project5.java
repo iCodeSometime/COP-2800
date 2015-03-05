@@ -79,7 +79,7 @@ public class Project5 extends Application {
       primaryStage.setScene(new Scene(rootLayout));
    }
    
-   public Car   getCar()         {return car;}
+   public Car    getCar()         {return car;}
    public String getLabelText()   {return speed.getText();}
    public void   pushAccelerate() {accelerate.fire();}
    public void   pushBrake()      {brake.fire();}
