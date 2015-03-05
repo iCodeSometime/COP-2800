@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 
 public class Project5 extends Application {
    private Stage primaryStage;
@@ -28,7 +29,21 @@ public class Project5 extends Application {
       this.primaryStage = primaryStage;
       this.primaryStage.setTitle("Cars");
       
+      getCar();
+      
       initRootLayout();
+   }
+   
+   private void getCar() {
+      boolean valid = false;
+      String make = JOptionPane.showInputDialog(null,
+         "Please enter the make of the car.");
+      if (make == null) {
+         System.exit(0);
+      }
+      String model = JOptionPane.showInputDialog(null,
+         "Please enter the model year of the car.");
+      car = new Car(make, model);
    }
    
    private void initRootLayout() {
@@ -54,6 +69,7 @@ public class Project5 extends Application {
       buttonPane.getChildren().add(accelerate);
       labelPane.getChildren().add(speed);
       rootLayout.setCenter(buttonPane);
+      rootLayout.setTop(labelPane);
       primaryStage.setScene(new Scene(rootLayout));
       primaryStage.show();
    }
@@ -72,18 +88,24 @@ class Car {
    // Speed of light in mph: 670,616,629
    private static final int SPEED_OF_LIGHT     = 670616629;
    
-   private final int    yearModel; // The model year of the car
+   private final String    yearModel; // The model year of the car
    private final String make;      // The make of the car
    
    private int speed; // The car's current speed
    /*                             Constructors                              */
-   public Car(int yearModel, String make) {
+   /**
+    * Constructs a car from the make and model year
+    * 
+    * @param make      non null String representing the car's make
+    * @param yearModel non null String representing the car's model year
+    */
+   public Car(String make, String yearModel) {
        this.yearModel = yearModel;
        this.make      = make;
        speed          = DEFAULT_SPEED;
    }
    /*                               Accessors                               */
-   public int    getYearModel() {return yearModel;}
+   public String    getYearModel() {return yearModel;}
    public String getMake()      {return make;}
    public int    getSpeed()     {return speed;}
    
