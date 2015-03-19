@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: e5e5e5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test1.view.StockOverviewController">
+   <children>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <FlowPane fx:id="rootFlowPane" hgap="28.0" prefHeight="400.0" prefWidth="600.0" rowValignment="TOP" style="-fx-background-color: e5e5e5;" vgap="28.0">
+               <padding>
+                  <Insets bottom="28.0" left="28.0" right="28.0" top="28.0" />
+               </padding></FlowPane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

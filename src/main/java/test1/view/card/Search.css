@@ -1,0 +1,22 @@
+
+#searchButton {
+	-fx-background-color: white;
+	-fx-background-image: url("res/searchBtn.png");
+	-fx-background-repeat: no-repeat;
+//	-fx-background-position: center;
+}
+#searchButton:hover {
+	-fx-background-image: url("res/searchBtnHover.png");
+}
+#searchBox {
+	-fx-background-color: white;
+	-fx-border: 0;
+	-fx-border-color: transparent;
+	-fx-focus-color: transparent;
+}
+#searchBox:focused {
+	-fx-background-color: white;
+}
+#searchButton {
+	-fx-background-color: white;
+}
