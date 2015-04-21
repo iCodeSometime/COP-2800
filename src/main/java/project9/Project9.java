@@ -6,6 +6,8 @@
  *  Program:    9 (String Utility Class)
  *
  *  This class provides different utility methods for working with strings.
+ *  The user will be able to input a string, and the program will
+ *  find either the consonants, or vowels, or both, based on the user's choice.
  *****************************************************************************/
 
 package project9;
@@ -146,7 +148,35 @@ class UtilString {
      * @return the number of consonants
      */
     public int countConsonants() {
-        return string.length() - countVowels();
+        int accum = 0;
+        for (int i = 0; i < string.length(); i++) {
+            char temp = string.charAt(i);
+            switch (temp) {
+                case 'b':
+                case 'c':
+                case 'd':
+                case 'f':
+                case 'g':
+                case 'h':
+                case 'j':
+                case 'k':
+                case 'l':
+                case 'm':
+                case 'n':
+                case 'p':
+                case 'q':
+                case 'r':
+                case 's':
+                case 't':
+                case 'v':
+                case 'w':
+                case 'x':
+                case 'y':
+                case 'z':
+                    accum++;
+            }
+        }
+        return accum;
     }
     /**
      * Finds the total number of characters in {@link #string}
@@ -156,7 +186,7 @@ class UtilString {
      * @return the number of total characters
      */
     public int countAll() {
-        return string.length();
+        return countVowels() + countConsonants();
     }
     /**
      * Gets a new String from the user, and assigns it to {@link #string}
